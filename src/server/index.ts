@@ -95,8 +95,14 @@ export class WhatsAppBotServer {
     this.app.use(express.static(staticPath));
 
     // SPA fallback - todas as rotas não-API retornam index.html
-    this.app.get('*', (req: Request, res: Response) => {
-      res.sendFile(path.join(staticPath, 'index.html'));
+    // Usando padrão válido para Express 5
+    this.app.use((req: Request, res: Response, next: NextFunction) => {
+      // Se não for rota de API, servir index.html
+      if (!req.path.startsWith('/api/')) {
+        res.sendFile(path.join(staticPath, 'index.html'));
+      } else {
+        next();
+      }
     });
 
     /* REMOVIDO: HTML inline antigo - agora usa public/index.html
