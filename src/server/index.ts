@@ -90,9 +90,14 @@ export class WhatsAppBotServer {
     this.app.use('/api/bot', botRoutes);
     this.app.use('/api/config', configRoutes);
 
-    // Serve static files from public directory
-    // Isso vai servir public/index.html quando acessar /
-    this.app.use(express.static(path.join(__dirname, '../../public')));
+    // Serve static files from React build
+    const staticPath = path.join(__dirname, '../public');
+    this.app.use(express.static(staticPath));
+
+    // SPA fallback - todas as rotas não-API retornam index.html
+    this.app.get('*', (req: Request, res: Response) => {
+      res.sendFile(path.join(staticPath, 'index.html'));
+    });
 
     /* REMOVIDO: HTML inline antigo - agora usa public/index.html
     // Root route - Simple dashboard

@@ -81,7 +81,7 @@ export default function Dashboard() {
   // Inicializar WebSocket e buscar status
   useEffect(() => {
     // Conectar ao WebSocket
-    const newSocket = io('http://localhost:3000', {
+    const newSocket = io(import.meta.env.VITE_API_URL || window.location.origin, {
       transports: ['websocket', 'polling']
     })
 

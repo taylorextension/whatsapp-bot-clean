@@ -7,8 +7,9 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
     "dev:client": "vite",
-    "build": "tsc",
-    "build:client": "vite build",
+    "build": "npm run build:server && npm run build:client",
+    "build:server": "tsc",
+    "build:client": "vite build --outDir dist/public",
     "preview:client": "vite preview",
     "start": "node dist/index.js"
   },
