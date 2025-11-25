@@ -1,8 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { emailSchema, EmailFormData } from '../../lib/validations'
-import Input from '../ui/Input'
-import Button from '../ui/Button'
+import { motion } from 'framer-motion'
 
 interface EmailStepProps {
   onSubmit: (email: string) => void
@@ -23,13 +22,20 @@ export default function EmailStep({ onSubmit, isLoading }: EmailStepProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
+    <motion.form
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.4 }}
+      onSubmit={handleSubmit(onFormSubmit)}
+      className="space-y-6"
+    >
       <div className="space-y-2">
-        <label className="block text-sm font-semibold text-white/90 mb-2">
+        <label className="block text-sm font-medium text-white/60 mb-2 ml-1">
           E-mail
         </label>
-        <div className="relative">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40">
+        <div className="relative group">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary-DEFAULT transition-colors duration-300">
             <svg
               className="w-5 h-5"
               fill="none"
@@ -50,40 +56,49 @@ export default function EmailStep({ onSubmit, isLoading }: EmailStepProps) {
             placeholder="seu@email.com"
             autoFocus
             autoComplete="email"
-            className="w-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/40 rounded-xl pl-12 pr-4 py-4 focus:bg-white/15 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/50 transition-all duration-300 outline-none"
+            className="w-full bg-carbon/50 backdrop-blur-md border border-subtle text-white placeholder-white/20 rounded-xl pl-12 pr-4 py-4 focus:bg-white/5 focus:border-primary-DEFAULT/50 focus:ring-1 focus:ring-primary-DEFAULT/50 transition-all duration-300 outline-none shadow-inner"
           />
+          {/* Input Glow Effect */}
+          <div className="absolute inset-0 rounded-xl bg-primary-DEFAULT/5 opacity-0 group-focus-within:opacity-100 pointer-events-none transition-opacity duration-300 blur-lg -z-10"></div>
         </div>
         {errors.email?.message && (
-          <p className="text-sm text-red-400 mt-2 flex items-center gap-2">
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-sm text-neon-orange mt-2 flex items-center gap-2 font-medium"
+          >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {errors.email.message}
-          </p>
+          </motion.p>
         )}
       </div>
 
-      <button
+      <motion.button
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         type="submit"
         disabled={isLoading}
-        className="w-full btn-primary py-4 text-base font-bold"
+        className="w-full relative overflow-hidden group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white rounded-xl py-4 font-medium transition-all duration-300"
       >
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
         {isLoading ? (
           <div className="flex items-center justify-center gap-3">
-            <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-            Enviando código...
+            <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/20 border-t-white"></div>
+            <span className="opacity-80">Enviando...</span>
           </div>
         ) : (
-          'Enviar código'
+          <span className="relative z-10">Enviar código</span>
         )}
-      </button>
+      </motion.button>
 
-      <p className="text-sm text-center text-white/50 flex items-center justify-center gap-2">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <p className="text-xs text-center text-white/30 flex items-center justify-center gap-2">
+        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         Enviaremos um código de verificação para o seu e-mail
       </p>
-    </form>
+    </motion.form>
   )
 }

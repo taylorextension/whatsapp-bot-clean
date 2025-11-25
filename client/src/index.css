@@ -4,37 +4,51 @@
 
 @layer base {
   body {
-    @apply bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white antialiased;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  #root {
-    @apply min-h-screen;
+    @apply bg-obsidian text-white antialiased overflow-x-hidden selection:bg-primary selection:text-white;
   }
 }
 
-@layer components {
-  .input-focus {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all duration-300;
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-xl bg-white/5 border border-white/10;
   }
-
-  .btn-primary {
-    @apply bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-semibold rounded-xl transition-all duration-300 hover:brightness-110 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100;
-  }
-
-  .card {
-    @apply bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-10 w-full max-w-md;
-  }
-
+  
   .glass-card {
-    @apply bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl transition-all duration-300 hover:bg-white/15 hover:border-white/30;
+    @apply backdrop-blur-xl bg-carbon/50 border border-subtle shadow-inner;
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
   }
 
-  .input-glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/50 rounded-xl px-4 py-3 focus:bg-white/15 focus:border-primary-400 transition-all duration-300;
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
   }
+  
+  .beam-mask {
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  }
+}
+
+/* Noise Texture Overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-obsidian;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
 }
